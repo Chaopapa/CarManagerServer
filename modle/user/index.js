@@ -59,6 +59,11 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 exports.__esModule = true;
 var mongoose_1 = require("mongoose");
+var StatusType;
+(function (StatusType) {
+    StatusType[StatusType["OPEN"] = 0] = "OPEN";
+    StatusType[StatusType["COLSE"] = 1] = "COLSE";
+})(StatusType || (StatusType = {}));
 var schema = new mongoose_1.Schema({
     username: {
         type: String,
@@ -71,6 +76,10 @@ var schema = new mongoose_1.Schema({
     nickname: {
         type: String,
         "default": "后台用户"
+    },
+    status: {
+        type: StatusType,
+        "default": StatusType.OPEN
     },
     role: {
         type: mongoose_1.SchemaTypes.ObjectId,
@@ -114,6 +123,22 @@ var User = /** @class */ (function () {
             });
         });
     };
+    /**
+     * 删除用户
+     */
+    User.prototype.deleteById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, exports.UserModel.findByIdAndDelete(id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, Promise.resolve(result)];
+                }
+            });
+        });
+    };
     User.prototype.findOne = function (info) {
         return __awaiter(this, void 0, void 0, function () {
             var result;
@@ -133,12 +158,32 @@ var User = /** @class */ (function () {
     /**
      * 查询管理员对应的列表
      */
-    User.prototype.findUserList = function () {
+    User.prototype.findUserList = function (pageNum, pageSize) {
+        if (pageNum === void 0) { pageNum = 0; }
+        if (pageSize === void 0) { pageSize = 10; }
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, exports.UserModel.find().populate({ path: 'role', select: 'name' })];
+                    case 0: return [4 /*yield*/, exports.UserModel.find().populate({ path: 'role', select: 'name' }).limit(pageSize).skip(pageNum * pageSize)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, Promise.resolve(result)];
+                }
+            });
+        });
+    };
+    /**
+     * 通过id修改数据
+     * @param id
+     * @param update
+     */
+    User.prototype.updateById = function (id, update) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, exports.UserModel.findByIdAndUpdate(id, update)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, Promise.resolve(result)];

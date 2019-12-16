@@ -9,7 +9,7 @@ const schema = new Schema({
     },
     addUser:{//添加人
         type:SchemaTypes.ObjectId,
-        ref:'users'
+        ref:'user'
     }, 
     desc:{
         type:String

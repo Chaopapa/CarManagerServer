@@ -45,7 +45,7 @@ var schema = new mongoose_1.Schema({
     },
     addUser: {
         type: mongoose_1.SchemaTypes.ObjectId,
-        ref: 'user'
+        ref: 'users'
     },
     desc: {
         type: String
@@ -113,7 +113,7 @@ var Role = /** @class */ (function () {
                                 var count;
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
-                                        case 0: return [4 /*yield*/, user_1.UserModel.count({ 'roleId': item._id })];
+                                        case 0: return [4 /*yield*/, user_1.UserModel.count({ 'role': item._id })];
                                         case 1:
                                             count = _a.sent();
                                             return [2 /*return*/, item.count = count];
