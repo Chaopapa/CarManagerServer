@@ -1,4 +1,4 @@
-import {Schema,model, Model,Document,SchemaTypes,DocumentToObjectOptions} from "mongoose";
+import {Schema,model, Model,Document,SchemaTypes} from "mongoose";
 
 enum StatusType{
     OPEN,
@@ -16,7 +16,8 @@ const schema = new Schema({
     },
     nickname:{
         type:String,
-        default:"后台用户"
+        default:"后台用户",
+        
     },
     status:{
         type:StatusType,
@@ -42,7 +43,7 @@ interface userType{
 class User{
 
     public async checkPassword(username:string,password:string){
-        const result   = await UserModel.findOne({username,password});
+        const result   = await UserModel.findOne({username,password,status:StatusType.OPEN.toString()});
         if(result){
             return Promise.resolve(result);
         }
@@ -97,7 +98,9 @@ class User{
      * @param update 
      */
     public async updateById(id:string,update:{}){
-        const result  = await UserModel.findByIdAndUpdate(id,update);
+         console.log(update);
+        const result  =await UserModel.findByIdAndUpdate({_id:id},update);
+
         return Promise.resolve(result);
     }
 

@@ -95,7 +95,7 @@ var User = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, exports.UserModel.findOne({ username: username, password: password })];
+                    case 0: return [4 /*yield*/, exports.UserModel.findOne({ username: username, password: password, status: StatusType.OPEN.toString() })];
                     case 1:
                         result = _a.sent();
                         if (result) {
@@ -199,7 +199,9 @@ var User = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, exports.UserModel.findByIdAndUpdate(id, update)];
+                    case 0:
+                        console.log(update);
+                        return [4 /*yield*/, exports.UserModel.findByIdAndUpdate({ _id: id }, update)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, Promise.resolve(result)];

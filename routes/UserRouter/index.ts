@@ -1,7 +1,6 @@
 import * as express from "express";
 import user from "../../modle/user";
-import {CodeType,ResType,ResError} from '../../base/entity/res'
-import { json } from "body-parser";
+import {CodeType,ResType,ResError,ResSuccess} from '../../base/entity/res'
 const router = express.Router();
 
 
@@ -15,7 +14,6 @@ router.post('/login',async (req,res)=>{
     const resData = {
       code:CodeType.SUCCESS,
       message:"登陆成功",
-      data:result
     }
     res.json(resData);
   } catch (error) {
@@ -30,7 +28,7 @@ router.get('/addUser',async (req,res)=>{
     const result =  await user.save({...req.query});
     const resData:ResType = {
       code:CodeType.SUCCESS,
-      message:'请求成功',
+      message:'添加成功',
       data:result
     }
     res.json({
@@ -45,6 +43,27 @@ router.get('/addUser',async (req,res)=>{
     res.json(resData);
   }
 });
+
+//删除
+router.get('/deleteUser',async (req,res)=>{
+  try {
+    await user.deleteById(req.query.id);
+    res.json(new ResSuccess("删除成功"));
+    
+  } catch (error) {
+    res.json(new ResError(error));
+  }
+})
+
+//修改
+router.get('/updateUser',async (req,res)=>{
+  try {
+    const result  =  await  user.updateById(req.query.id,{...req.query});
+    res.json(new ResSuccess('修改成功'));
+  } catch (error) {
+    res.json(new ResError(error));
+  }
+})
 
 router.get('/listUser',async(req,res)=>{
   try {

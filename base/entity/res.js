@@ -15,3 +15,13 @@ var ResError = /** @class */ (function () {
     return ResError;
 }());
 exports.ResError = ResError;
+var ResSuccess = /** @class */ (function () {
+    function ResSuccess(message, data) {
+        this.message = '';
+        this.code = CodeType.SUCCESS;
+        this.message = message;
+        this.data = data;
+    }
+    return ResSuccess;
+}());
+exports.ResSuccess = ResSuccess;

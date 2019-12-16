@@ -65,8 +65,7 @@ router.post('/login', function (req, res) { return __awaiter(void 0, void 0, voi
                 result = _b.sent();
                 resData = {
                     code: res_1.CodeType.SUCCESS,
-                    message: "登陆成功",
-                    data: result
+                    message: "登陆成功"
                 };
                 res.json(resData);
                 return [3 /*break*/, 4];
@@ -92,7 +91,7 @@ router.get('/addUser', function (req, res) { return __awaiter(void 0, void 0, vo
                 result = _a.sent();
                 resData = {
                     code: res_1.CodeType.SUCCESS,
-                    message: '请求成功',
+                    message: '添加成功',
                     data: result
                 };
                 res.json({
@@ -112,8 +111,48 @@ router.get('/addUser', function (req, res) { return __awaiter(void 0, void 0, vo
         }
     });
 }); });
+//删除
+router.get('/deleteUser', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user_1["default"].deleteById(req.query.id)];
+            case 1:
+                _a.sent();
+                res.json(new res_1.ResSuccess("删除成功"));
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.json(new res_1.ResError(error_3));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+//修改
+router.get('/updateUser', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result, error_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user_1["default"].updateById(req.query.id, __assign({}, req.query))];
+            case 1:
+                result = _a.sent();
+                res.json(new res_1.ResSuccess('修改成功'));
+                return [3 /*break*/, 3];
+            case 2:
+                error_4 = _a.sent();
+                res.json(new res_1.ResError(error_4));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, resData, error_3, resData;
+    var result, resData, error_5, resData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -129,10 +168,10 @@ router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(resData);
                 return [3 /*break*/, 3];
             case 2:
-                error_3 = _a.sent();
+                error_5 = _a.sent();
                 resData = {
                     code: res_1.CodeType.FAIL,
-                    message: error_3.message
+                    message: error_5.message
                 };
                 res.json(resData);
                 return [3 /*break*/, 3];

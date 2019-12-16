@@ -22,3 +22,16 @@ export class ResError{
     }
 }
 
+export class ResSuccess{
+    private code:CodeType;
+    private message?='';
+    private data:any;
+
+    constructor(message?:string,data?:any){
+        this.code = CodeType.SUCCESS;
+        this.message = message;
+        this.data = data;
+    }
+
+}
+
