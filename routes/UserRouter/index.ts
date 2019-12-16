@@ -1,14 +1,28 @@
 import * as express from "express";
 import user from "../../modle/user";
-import {CodeType,ResType} from '../../base/entity/res'
+import {CodeType,ResType,ResError} from '../../base/entity/res'
+import { json } from "body-parser";
 const router = express.Router();
 
 
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+
+
+router.post('/login',async (req,res)=>{
+  const {username,password}  = req.body; 
+  try {
+    const result  = await user.checkPassword(username,password);
+    const resData = {
+      code:CodeType.SUCCESS,
+      message:"登陆成功",
+      data:result
+    }
+    res.json(resData);
+  } catch (error) {
+    res.json(new ResError(error));
+  }
+})
+
 
 router.get('/addUser',async (req,res)=>{
   console.log(req.url);

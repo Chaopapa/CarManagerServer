@@ -90,6 +90,22 @@ exports.UserModel = mongoose_1.model('user', schema);
 var User = /** @class */ (function () {
     function User() {
     }
+    User.prototype.checkPassword = function (username, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, exports.UserModel.findOne({ username: username, password: password })];
+                    case 1:
+                        result = _a.sent();
+                        if (result) {
+                            return [2 /*return*/, Promise.resolve(result)];
+                        }
+                        return [2 /*return*/, Promise.reject(new Error('用户名或密码错误'))];
+                }
+            });
+        });
+    };
     /**
      * 新增用户
      * @param param0

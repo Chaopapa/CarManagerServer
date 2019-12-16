@@ -40,6 +40,15 @@ interface userType{
 }
 
 class User{
+
+    public async checkPassword(username:string,password:string){
+        const result   = await UserModel.findOne({username,password});
+        if(result){
+            return Promise.resolve(result);
+        }
+        return Promise.reject(new Error('用户名或密码错误'));
+    }
+
     /**
      * 新增用户
      * @param param0 

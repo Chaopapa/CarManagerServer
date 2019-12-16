@@ -51,12 +51,35 @@ var express = require("express");
 var user_1 = require("../../modle/user");
 var res_1 = require("../../base/entity/res");
 var router = express.Router();
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
+router.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, username, password, result, resData, error_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, username = _a.username, password = _a.password;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, user_1["default"].checkPassword(username, password)];
+            case 2:
+                result = _b.sent();
+                resData = {
+                    code: res_1.CodeType.SUCCESS,
+                    message: "登陆成功",
+                    data: result
+                };
+                res.json(resData);
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _b.sent();
+                res.json(new res_1.ResError(error_1));
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 router.get('/addUser', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, resData, error_1, resData;
+    var result, resData, error_2, resData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -77,11 +100,11 @@ router.get('/addUser', function (req, res) { return __awaiter(void 0, void 0, vo
                 });
                 return [3 /*break*/, 4];
             case 3:
-                error_1 = _a.sent();
-                console.log(error_1.message);
+                error_2 = _a.sent();
+                console.log(error_2.message);
                 resData = {
                     code: res_1.CodeType.FAIL,
-                    message: error_1.message
+                    message: error_2.message
                 };
                 res.json(resData);
                 return [3 /*break*/, 4];
@@ -90,7 +113,7 @@ router.get('/addUser', function (req, res) { return __awaiter(void 0, void 0, vo
     });
 }); });
 router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, resData, error_2, resData;
+    var result, resData, error_3, resData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -106,10 +129,10 @@ router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(resData);
                 return [3 /*break*/, 3];
             case 2:
-                error_2 = _a.sent();
+                error_3 = _a.sent();
                 resData = {
                     code: res_1.CodeType.FAIL,
-                    message: error_2.message
+                    message: error_3.message
                 };
                 res.json(resData);
                 return [3 /*break*/, 3];

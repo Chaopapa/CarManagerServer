@@ -45,7 +45,7 @@ var schema = new mongoose_1.Schema({
     },
     addUser: {
         type: mongoose_1.SchemaTypes.ObjectId,
-        ref: 'users'
+        ref: 'user'
     },
     desc: {
         type: String
