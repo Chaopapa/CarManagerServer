@@ -14,6 +14,9 @@ const schema = new Schema({
     desc:{
         type:String
     },
+    park:{
+        type:SchemaTypes.ObjectId
+    },
     resourceId:{
         type:Array    
     }
@@ -24,7 +27,10 @@ const RoleModel:Model<Document,{}> = model('role',schema);
 
 interface roleType{
     name:string,
-    resourceId?:string[]
+    desc?:string,
+    resourceId?:string,
+    park?:any
+
 }
 
 class Role{
@@ -32,8 +38,14 @@ class Role{
      * 新增角色
      * @param param0 
      */
-    public  async save({name,resourceId}:roleType){
-            const role = await new RoleModel({name,resourceId});
+    public  async save({name,desc,park,resourceId}:roleType){
+            
+            let resourceIdArr:any[] = []
+            if(resourceId){
+                resourceIdArr= (resourceId as string).split(',');
+            }
+            console.log(resourceIdArr);
+            const role = await new RoleModel({name,desc,park,resourceId:resourceIdArr});
             const result = await role.save();
             return Promise.resolve(result);  
     }

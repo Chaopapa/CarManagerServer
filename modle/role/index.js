@@ -50,6 +50,9 @@ var schema = new mongoose_1.Schema({
     desc: {
         type: String
     },
+    park: {
+        type: mongoose_1.SchemaTypes.ObjectId
+    },
     resourceId: {
         type: Array
     }
@@ -63,12 +66,18 @@ var Role = /** @class */ (function () {
      * @param param0
      */
     Role.prototype.save = function (_a) {
-        var name = _a.name, resourceId = _a.resourceId;
+        var name = _a.name, desc = _a.desc, park = _a.park, resourceId = _a.resourceId;
         return __awaiter(this, void 0, void 0, function () {
-            var role, result;
+            var resourceIdArr, role, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, new RoleModel({ name: name, resourceId: resourceId })];
+                    case 0:
+                        resourceIdArr = [];
+                        if (resourceId) {
+                            resourceIdArr = resourceId.split(',');
+                        }
+                        console.log(resourceIdArr);
+                        return [4 /*yield*/, new RoleModel({ name: name, desc: desc, park: park, resourceId: resourceIdArr })];
                     case 1:
                         role = _b.sent();
                         return [4 /*yield*/, role.save()];

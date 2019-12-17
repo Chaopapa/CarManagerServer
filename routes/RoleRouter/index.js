@@ -56,7 +56,7 @@ router.get('/', function (req, res, next) {
     res.send('respond with a resource');
 });
 router.get('/addRole', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var resData, error_1, resData;
+    var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -67,22 +67,11 @@ router.get('/addRole', function (req, res) { return __awaiter(void 0, void 0, vo
                 return [4 /*yield*/, role_1["default"].save(__assign({}, req.query))];
             case 2:
                 _a.sent();
-                resData = {
-                    code: res_1.CodeType.SUCCESS,
-                    message: '请求成功'
-                };
-                res.json({
-                    resData: resData
-                });
+                res.json(new res_1.ResSuccess("添加成功"));
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
-                console.log(error_1.message);
-                resData = {
-                    code: res_1.CodeType.FAIL,
-                    message: error_1.message
-                };
-                res.json(resData);
+                res.json(new res_1.ResError(error_1));
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
