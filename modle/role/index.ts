@@ -1,5 +1,6 @@
 import {Schema,model, Model,Document,SchemaTypes} from "mongoose";
 import {UserModel} from "../user"
+import { ResEmpty } from "../../base/entity/res";
  
 const schema = new Schema({
     name:{
@@ -19,6 +20,9 @@ const schema = new Schema({
     },
     resourceId:{
         type:Array    
+    },
+    count:{
+        type:Number,
     }
 });
 
@@ -62,19 +66,38 @@ class Role{
     /**
      * 查看所有角色列表
      */
-    public async findRoleList(){
+    public async findRoleList(pageNum:number=0,pageSize:number=10){
        
-        const result =await  RoleModel.find().populate({path:'addUser',select:'nickname'});
-        let res = null;
-        if(result){
-            res = result.map( async (item:any)=>{
-                const count  = await UserModel.count({'role':item._id});
-                return item.count=count;
-            })
-        }
-        return res;
-       
+        let result =await  RoleModel.find()
+        .limit(pageSize).skip(pageSize*pageNum)
+        .populate({path:'addUser',select:'nickname'})
+        ;
+
+        let  resultPromise:Promise<any>[] =await result.map(async (item) => {
+            let resItem = item.toObject();
+            let count  = await this.countRoleUser(resItem._id);
+            resItem.count =count;
+            return resItem;
+        });
+
+        
+        return Promise.all(resultPromise).then(result=>{
+            return Promise.resolve(result);
+        }).catch(err=>{
+            return Promise.reject(err);
+        })
+        
     }
+
+    /**
+     * 查询角色的user数
+     */
+
+    public async countRoleUser(role:string){
+        let count  = await UserModel.count({role});
+        return count;
+    }
+
 
 }
 

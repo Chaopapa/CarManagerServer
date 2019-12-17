@@ -55,6 +55,9 @@ var schema = new mongoose_1.Schema({
     },
     resourceId: {
         type: Array
+    },
+    count: {
+        type: Number
     }
 });
 var RoleModel = mongoose_1.model('role', schema);
@@ -107,30 +110,56 @@ var Role = /** @class */ (function () {
     /**
      * 查看所有角色列表
      */
-    Role.prototype.findRoleList = function () {
+    Role.prototype.findRoleList = function (pageNum, pageSize) {
+        if (pageNum === void 0) { pageNum = 0; }
+        if (pageSize === void 0) { pageSize = 10; }
         return __awaiter(this, void 0, void 0, function () {
-            var result, res;
+            var result, resultPromise;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, RoleModel.find().populate({ path: 'addUser', select: 'nickname' })];
+                    case 0: return [4 /*yield*/, RoleModel.find()
+                            .limit(pageSize).skip(pageSize * pageNum)
+                            .populate({ path: 'addUser', select: 'nickname' })];
                     case 1:
                         result = _a.sent();
-                        res = null;
-                        if (result) {
-                            res = result.map(function (item) { return __awaiter(_this, void 0, void 0, function () {
-                                var count;
+                        return [4 /*yield*/, result.map(function (item) { return __awaiter(_this, void 0, void 0, function () {
+                                var resItem, count;
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
-                                        case 0: return [4 /*yield*/, user_1.UserModel.count({ 'role': item._id })];
+                                        case 0:
+                                            resItem = item.toObject();
+                                            return [4 /*yield*/, this.countRoleUser(resItem._id)];
                                         case 1:
                                             count = _a.sent();
-                                            return [2 /*return*/, item.count = count];
+                                            resItem.count = count;
+                                            return [2 /*return*/, resItem];
                                     }
                                 });
-                            }); });
-                        }
-                        return [2 /*return*/, res];
+                            }); })];
+                    case 2:
+                        resultPromise = _a.sent();
+                        return [2 /*return*/, Promise.all(resultPromise).then(function (result) {
+                                return Promise.resolve(result);
+                            })["catch"](function (err) {
+                                return Promise.reject(err);
+                            })];
+                }
+            });
+        });
+    };
+    /**
+     * 查询角色的user数
+     */
+    Role.prototype.countRoleUser = function (role) {
+        return __awaiter(this, void 0, void 0, function () {
+            var count;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, user_1.UserModel.count({ role: role })];
+                    case 1:
+                        count = _a.sent();
+                        return [2 /*return*/, count];
                 }
             });
         });
