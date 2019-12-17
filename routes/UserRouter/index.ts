@@ -67,7 +67,10 @@ router.get('/updateUser',async (req,res)=>{
 
 router.get('/listUser',async(req,res)=>{
   try {
-    const result = await user.findUserList();
+    
+    const  {pageNum,pageSize}   = req.query;
+    console.log(pageNum,pageSize)
+    const result = await user.findUserList(pageNum,pageSize);
     const resData:ResType = {
       code:result?CodeType.SUCCESS:CodeType.EMPTY,
       message:result?'请求成功':'数据为空',

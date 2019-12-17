@@ -152,14 +152,16 @@ router.get('/updateUser', function (req, res) { return __awaiter(void 0, void 0,
     });
 }); });
 router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, resData, error_5, resData;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, pageNum, pageSize, result, resData, error_5, resData;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, user_1["default"].findUserList()];
+                _b.trys.push([0, 2, , 3]);
+                _a = req.query, pageNum = _a.pageNum, pageSize = _a.pageSize;
+                console.log(pageNum, pageSize);
+                return [4 /*yield*/, user_1["default"].findUserList(pageNum, pageSize)];
             case 1:
-                result = _a.sent();
+                result = _b.sent();
                 resData = {
                     code: result ? res_1.CodeType.SUCCESS : res_1.CodeType.EMPTY,
                     message: result ? '请求成功' : '数据为空',
@@ -168,7 +170,7 @@ router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(resData);
                 return [3 /*break*/, 3];
             case 2:
-                error_5 = _a.sent();
+                error_5 = _b.sent();
                 resData = {
                     code: res_1.CodeType.FAIL,
                     message: error_5.message

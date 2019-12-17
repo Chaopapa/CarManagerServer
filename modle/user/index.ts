@@ -19,6 +19,10 @@ const schema = new Schema({
         default:"后台用户",
         
     },
+    addUser:{
+        type:SchemaTypes.ObjectId,
+        ref:"user"
+    },
     status:{
         type:StatusType,
         default:StatusType.OPEN
@@ -88,7 +92,9 @@ class User{
      * 查询管理员对应的列表
      */
     public async findUserList(pageNum:number=0,pageSize:number=10){
-        const result = await UserModel.find().populate({path:'role',select:'name'}).limit(pageSize).skip(pageNum*pageSize);
+        const result = await UserModel.find().populate({path:'role',select:'name'})
+        .populate({path:'addUser',select:'nickname'})
+        .limit(Number(pageSize)).skip(Number(pageNum*pageSize));
         return Promise.resolve(result);
     }
 

@@ -35,3 +35,12 @@ export class ResSuccess{
 
 }
 
+export class ResEmpty{
+    private code:CodeType;
+    private message?='';
+   constructor (){
+       this.message="数据为空";
+       this.code = CodeType.EMPTY;
+   }
+}
+

@@ -181,7 +181,7 @@ var User = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, exports.UserModel.find().populate({ path: 'role', select: 'name' }).limit(pageSize).skip(pageNum * pageSize)];
+                    case 0: return [4 /*yield*/, exports.UserModel.find().populate({ path: 'role', select: 'name' }).limit(Number(pageSize)).skip(Number(pageNum * pageSize))];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, Promise.resolve(result)];

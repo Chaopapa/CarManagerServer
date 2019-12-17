@@ -25,3 +25,12 @@ var ResSuccess = /** @class */ (function () {
     return ResSuccess;
 }());
 exports.ResSuccess = ResSuccess;
+var ResEmpty = /** @class */ (function () {
+    function ResEmpty() {
+        this.message = '';
+        this.message = "数据为空";
+        this.code = CodeType.EMPTY;
+    }
+    return ResEmpty;
+}());
+exports.ResEmpty = ResEmpty;
