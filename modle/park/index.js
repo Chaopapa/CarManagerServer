@@ -50,7 +50,7 @@ var schema = new mongoose_1.Schema({
         type: String,
         required: true
     },
-    countId: {
+    countyId: {
         type: String,
         required: true
     },
@@ -85,10 +85,10 @@ var Park = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        params.ruleArr = params.ruleArr.split(',');
-                        if (!params.ruleId) return [3 /*break*/, 2];
-                        _id = params.ruleId;
-                        delete params.ruleId;
+                        params.ruleArr = params.ruleArr ? params.ruleArr.split(',') : [];
+                        if (!params.parkId) return [3 /*break*/, 2];
+                        _id = params.parkId;
+                        delete params.parkId;
                         return [4 /*yield*/, exports.ParkModel.findByIdAndUpdate({ _id: _id }, params)];
                     case 1:
                         result = _a.sent();

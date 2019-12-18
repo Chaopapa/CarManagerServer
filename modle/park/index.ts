@@ -14,7 +14,7 @@ const schema: Schema = new Schema({
         type: String,
         required: true
     },
-    countId: {
+    countyId: {
         type: String,
         required: true
     },
@@ -47,7 +47,7 @@ interface ParkType {
     parkName: string,
     provinceId: string,
     cityId: string,
-    countId: string,
+    countyId: string,
     street: string,
     state: string
     longitud?: string,
@@ -56,16 +56,16 @@ interface ParkType {
     addUser: {
         type: string
     },
-    ruleId?: string
+    parkId?: string
 
 }
 
 class Park {
     public async saveOrUpdate(params: ParkType) {
-        params.ruleArr = (params.ruleArr as string).split(',')
-        if (params.ruleId) {//修改
-            let _id = params.ruleId;
-            delete params.ruleId;
+        params.ruleArr = params.ruleArr?(params.ruleArr as string).split(','):[]
+        if (params.parkId) {//修改
+            let _id = params.parkId;
+            delete params.parkId;
             let result = await ParkModel.findByIdAndUpdate({_id},params);
             return Promise.resolve(result);
         }else{//新增
