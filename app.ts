@@ -3,7 +3,8 @@ import * as express from 'express';
 import * as mongoose  from  'mongoose';
 import usersRouter from './routes/UserRouter';
 import roleRouter from "./routes/RoleRouter";
-import areaROuter from "./routes/AreaRouter";
+import areaRouter from "./routes/AreaRouter";
+import parkRouter from "./routes/ParkRouter";
 
 
 const app:any = express();
@@ -50,7 +51,8 @@ app.use(
 
 app.use('/manager/api/user', usersRouter);
 app.use('/manager/api/role',roleRouter);
-app.use("/manager/api/area",areaROuter);
+app.use("/manager/api/area",areaRouter);
+app.use("/manager/api/parking",parkRouter);
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

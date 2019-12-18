@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
 var UserRouter_1 = require("./routes/UserRouter");
 var RoleRouter_1 = require("./routes/RoleRouter");
 var AreaRouter_1 = require("./routes/AreaRouter");
+var ParkRouter_1 = require("./routes/ParkRouter");
 var app = express();
 mongoose.connect('mongodb://localhost:27017/car', { useNewUrlParser: true, useUnifiedTopology: true }, function (err) {
     if (err) {
@@ -42,6 +43,7 @@ app.use(function (req, res, next) {
 app.use('/manager/api/user', UserRouter_1["default"]);
 app.use('/manager/api/role', RoleRouter_1["default"]);
 app.use("/manager/api/area", AreaRouter_1["default"]);
+app.use("/manager/api/parking", ParkRouter_1["default"]);
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));
