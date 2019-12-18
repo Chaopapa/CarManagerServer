@@ -98,6 +98,23 @@ class Role{
         return count;
     }
 
+    /**
+     * 删除用户
+     * 
+     */
+    public async  deleteRole(id:string){
+        let count  = await this.countRoleUser(id);
+
+        if(count>0){
+            return Promise.reject(new Error('该角色存在用户不可删除'));
+        }
+
+        const result  =  await RoleModel.findByIdAndDelete(id);
+
+        return Promise.resolve(result);
+    }
+
+
 
 }
 

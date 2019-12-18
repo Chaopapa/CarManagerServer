@@ -164,6 +164,29 @@ var Role = /** @class */ (function () {
             });
         });
     };
+    /**
+     * 删除用户
+     *
+     */
+    Role.prototype.deleteRole = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var count, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.countRoleUser(id)];
+                    case 1:
+                        count = _a.sent();
+                        if (count > 0) {
+                            return [2 /*return*/, Promise.reject(new Error('该角色存在用户不可删除'))];
+                        }
+                        return [4 /*yield*/, RoleModel.findByIdAndDelete(id)];
+                    case 2:
+                        result = _a.sent();
+                        return [2 /*return*/, Promise.resolve(result)];
+                }
+            });
+        });
+    };
     return Role;
 }());
 exports["default"] = new Role();

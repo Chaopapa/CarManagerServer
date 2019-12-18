@@ -1,6 +1,6 @@
 import * as express from "express";
 import role from "../../modle/role";
-import {CodeType,ResType,ResSuccess,ResError,ResEmpty} from '../../base/entity/res'
+import {ResSuccess,ResError,ResEmpty} from '../../base/entity/res'
 
 const router = express.Router();
 
@@ -35,7 +35,7 @@ router.get('/listRole',async (req,res)=>{
     const {pageNum,pageSize}  = req.query;
     let result  = await role.findRoleList(Number(pageNum),Number(pageSize));
     
-    
+
 
     console.log(result);
     res.json(result?new ResSuccess("请求成功",result):new ResEmpty());
@@ -44,6 +44,18 @@ router.get('/listRole',async (req,res)=>{
   }
 
 })
+
+router.get("/deleteRole",async (req,res)=>{
+  try {
+    await role.deleteRole(req.query.id);
+    res.json(new ResSuccess("删除成功"));
+  } catch (error) {
+    res.json( new ResError(error));
+  }
+})
+
+
+
 
 
 export default router;
