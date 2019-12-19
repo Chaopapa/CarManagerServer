@@ -1,5 +1,6 @@
-import { Schema, SchemaTypes, model, Document } from "mongoose";
+import { Schema, SchemaTypes, model, Document} from "mongoose";
 import BillModel, { BillMode }  from "../bill";
+import  {areaJson as area} from "../area"
 
 const schema: Schema = new Schema({
     parkName: {
@@ -61,6 +62,15 @@ interface ParkType {
 
 }
 
+type GetType<T> = {
+    [P in keyof T]: T[P];
+}
+
+
+
+// type ProvinceType = GetType<>
+
+
 class Park {
     public async saveOrUpdate(params: ParkType) {
         params.ruleArr = params.ruleArr?(params.ruleArr as string).split(','):[]
@@ -84,14 +94,30 @@ class Park {
         console.log(pageNum,pageSize);
         let park  = await ParkModel.find().limit(Number(pageSize)).skip(Number(pageNum)*Number(pageSize));
         
-        park.forEach(async (item:Document)=>{
+       
+       
+        let resultPromise =  await park.map(async (item:Document)=>{
             let ruleArr =(item as any).ruleArr;
             let ruleList  = await BillMode.find().in("_id",ruleArr);
-             item.toObject().ruleList =ruleList;
+            let  itemObject= item.toObject();
+            
 
+            itemObject.ruleArr = ruleList;
+            itemObject.province = (area.province_list as any)[itemObject.provinceId];
+            itemObject.city = (area.city_list as any)[itemObject.cityId];
+            itemObject.county = (area.county_list as any)[itemObject.countyId];
+            return itemObject;
         });
+
+        return  Promise.all(resultPromise)
+        .then(result=>{
+            return Promise.resolve(result);
+        })
+        .catch(err=>{
+            return Promise.reject(err);
+        })
         
-        return Promise.resolve(park);
+       
         
         
     

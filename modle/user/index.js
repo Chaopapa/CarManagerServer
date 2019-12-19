@@ -179,15 +179,15 @@ var User = /** @class */ (function () {
      * 查询管理员对应的列表
      */
     User.prototype.findUserList = function (pageNum, pageSize) {
-        if (pageNum === void 0) { pageNum = 0; }
-        if (pageSize === void 0) { pageSize = 10; }
+        if (pageNum === void 0) { pageNum = '0'; }
+        if (pageSize === void 0) { pageSize = '10'; }
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, exports.UserModel.find().populate({ path: 'role', select: 'name' })
                             .populate({ path: 'addUser', select: 'nickname' })
-                            .limit(Number(pageSize)).skip(Number(pageNum * pageSize))];
+                            .limit(Number(pageSize)).skip(Number(pageNum) * Number(pageSize))];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, Promise.resolve(result)];

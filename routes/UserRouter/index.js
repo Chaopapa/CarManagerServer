@@ -158,7 +158,6 @@ router.get('/listUser', function (req, res) { return __awaiter(void 0, void 0, v
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 _a = req.query, pageNum = _a.pageNum, pageSize = _a.pageSize;
-                console.log(pageNum, pageSize);
                 return [4 /*yield*/, user_1["default"].findUserList(pageNum, pageSize)];
             case 1:
                 result = _b.sent();

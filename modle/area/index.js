@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var areaJson = {
+exports.areaJson = {
     province_list: {
         110000: '北京市',
         120000: '天津市',
@@ -4044,10 +4044,10 @@ var Area = /** @class */ (function () {
     function Area() {
     }
     Area.prototype.getProvinceList = function () {
-        return areaJson['province_list'];
+        return exports.areaJson['province_list'];
     };
     Area.prototype.getCityList = function (provinceId) {
-        var city = areaJson["city_list"];
+        var city = exports.areaJson["city_list"];
         var cityKeys = Object.keys(city);
         //截取省号前缀
         var provincePre = provinceId.slice(0, 3);
@@ -4062,7 +4062,7 @@ var Area = /** @class */ (function () {
         return cityList;
     };
     Area.prototype.getCountyList = function (cityId) {
-        var county = areaJson["county_list"];
+        var county = exports.areaJson["county_list"];
         var countyKeys = Object.keys(county);
         //获取市号前缀
         var cityPre = cityId.slice(0, 4);

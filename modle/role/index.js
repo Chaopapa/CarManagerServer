@@ -115,15 +115,15 @@ var Role = /** @class */ (function () {
      * 查看所有角色列表
      */
     Role.prototype.findRoleList = function (pageNum, pageSize) {
-        if (pageNum === void 0) { pageNum = 0; }
-        if (pageSize === void 0) { pageSize = 10; }
+        if (pageNum === void 0) { pageNum = '0'; }
+        if (pageSize === void 0) { pageSize = '10'; }
         return __awaiter(this, void 0, void 0, function () {
             var result, resultPromise;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, RoleModel.find()
-                            .limit(pageSize).skip(pageSize * pageNum)
+                            .limit(Number(pageSize)).skip(Number(pageSize) * Number(pageNum))
                             .populate({ path: 'addUser', select: 'nickname' })
                             .populate({ path: 'park', select: 'parkName' })];
                     case 1:

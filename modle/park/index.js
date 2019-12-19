@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var mongoose_1 = require("mongoose");
 var bill_1 = require("../bill");
+var area_1 = require("../area");
 var schema = new mongoose_1.Schema({
     parkName: {
         type: String,
@@ -77,6 +78,7 @@ var schema = new mongoose_1.Schema({
     }
 });
 exports.ParkModel = mongoose_1.model("park", schema);
+// type ProvinceType = GetType<>
 var Park = /** @class */ (function () {
     function Park() {
     }
@@ -118,7 +120,7 @@ var Park = /** @class */ (function () {
         if (pageNum === void 0) { pageNum = '0'; }
         if (pageSize === void 0) { pageSize = '10'; }
         return __awaiter(this, void 0, void 0, function () {
-            var park;
+            var park, resultPromise;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -127,21 +129,32 @@ var Park = /** @class */ (function () {
                         return [4 /*yield*/, exports.ParkModel.find().limit(Number(pageSize)).skip(Number(pageNum) * Number(pageSize))];
                     case 1:
                         park = _a.sent();
-                        park.forEach(function (item) { return __awaiter(_this, void 0, void 0, function () {
-                            var ruleArr, ruleList;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        ruleArr = item.ruleArr;
-                                        return [4 /*yield*/, bill_1.BillMode.find()["in"]("_id", ruleArr)];
-                                    case 1:
-                                        ruleList = _a.sent();
-                                        item.toObject().ruleList = ruleList;
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        return [2 /*return*/, Promise.resolve(park)];
+                        return [4 /*yield*/, park.map(function (item) { return __awaiter(_this, void 0, void 0, function () {
+                                var ruleArr, ruleList, itemObject;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            ruleArr = item.ruleArr;
+                                            return [4 /*yield*/, bill_1.BillMode.find()["in"]("_id", ruleArr)];
+                                        case 1:
+                                            ruleList = _a.sent();
+                                            itemObject = item.toObject();
+                                            itemObject.ruleArr = ruleList;
+                                            itemObject.province = area_1.areaJson.province_list[itemObject.provinceId];
+                                            itemObject.city = area_1.areaJson.city_list[itemObject.cityId];
+                                            itemObject.county = area_1.areaJson.county_list[itemObject.countyId];
+                                            return [2 /*return*/, itemObject];
+                                    }
+                                });
+                            }); })];
+                    case 2:
+                        resultPromise = _a.sent();
+                        return [2 /*return*/, Promise.all(resultPromise)
+                                .then(function (result) {
+                                return Promise.resolve(result);
+                            })["catch"](function (err) {
+                                return Promise.reject(err);
+                            })];
                 }
             });
         });

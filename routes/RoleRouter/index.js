@@ -103,7 +103,7 @@ router.get('/listRole', function (req, res) { return __awaiter(void 0, void 0, v
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 _a = req.query, pageNum = _a.pageNum, pageSize = _a.pageSize;
-                return [4 /*yield*/, role_1["default"].findRoleList(Number(pageNum), Number(pageSize))];
+                return [4 /*yield*/, role_1["default"].findRoleList(pageNum, pageSize)];
             case 1:
                 result = _b.sent();
                 console.log(result);
