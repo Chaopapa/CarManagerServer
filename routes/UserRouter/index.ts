@@ -69,7 +69,6 @@ router.get('/listUser',async(req,res)=>{
   try {
     
     const  {pageNum,pageSize}   = req.query;
-    console.log(pageNum,pageSize)
     const result = await user.findUserList(pageNum,pageSize);
     const resData:ResType = {
       code:result?CodeType.SUCCESS:CodeType.EMPTY,

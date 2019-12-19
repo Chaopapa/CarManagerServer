@@ -33,7 +33,7 @@ router.get('/allRole',async (req,res)=>{
 router.get('/listRole',async (req,res)=>{
   try {
     const {pageNum,pageSize}  = req.query;
-    let result  = await role.findRoleList(Number(pageNum),Number(pageSize));
+    let result  = await role.findRoleList(pageNum,pageSize);
     
 
 

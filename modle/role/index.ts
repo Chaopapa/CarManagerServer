@@ -1,64 +1,71 @@
-import {Schema,model, Model,Document,SchemaTypes} from "mongoose";
-import {UserModel} from "../user"
+import { Schema, model, Model, Document, SchemaTypes } from "mongoose";
+import { UserModel } from "../user"
 import { ResEmpty } from "../../base/entity/res";
- 
+
 const schema = new Schema({
-    name:{
-        type:String,
-        required:true,
+    name: {
+        type: String,
+        required: true,
 
     },
-    addUser:{//添加人
-        type:SchemaTypes.ObjectId,
-        ref:'user'
-    }, 
-    desc:{
-        type:String
+    addUser: {//添加人
+        type: SchemaTypes.ObjectId,
+        ref: 'user'
     },
-    park:{
-        type:SchemaTypes.ObjectId
+    desc: {
+        type: String
     },
-    resourceId:{
-        type:Array    
+    park: {
+        type: SchemaTypes.ObjectId,
+        ref:"park"
     },
-    count:{
-        type:Number,
+    resourceId: {
+        type: Array
+    },
+    count: {
+        type: Number,
     }
 });
 
 
-const RoleModel:Model<Document,{}> = model('role',schema);
+const RoleModel: Model<Document, {}> = model('role', schema);
 
-interface roleType{
-    name:string,
-    desc?:string,
-    resourceId?:string,
-    park?:any
+interface roleType {
+    name: string,
+    desc?: string,
+    resourceId?: string,
+    park?: any,
+    id?: string
 
 }
 
-class Role{
+class Role {
     /**
-     * 新增角色
+     * 新增/修改角色
      * @param param0 
      */
-    public  async save({name,desc,park,resourceId}:roleType){
-            
-            let resourceIdArr:any[] = []
-            if(resourceId){
-                resourceIdArr= (resourceId as string).split(',');
-            }
-            console.log(resourceIdArr);
-            const role = await new RoleModel({name,desc,park,resourceId:resourceIdArr});
+    public async save({ id, name, desc, park, resourceId }: roleType) {
+
+        let resourceIdArr: any[] = []
+        if (resourceId) {
+            resourceIdArr = (resourceId as string).split(',');
+        }
+        if (id) {
+            let result  = await RoleModel.findByIdAndUpdate({_id:id},{name,desc,park,resourceId:resourceIdArr});
+            return Promise.resolve(result);
+        } else {
+            const role = new RoleModel({ name, desc, park, resourceId: resourceIdArr });
             const result = await role.save();
-            return Promise.resolve(result);  
+            return Promise.resolve(result);
+        }
+
     }
 
     /**
-     * 查询所有角色
+     * 查询所有角色}
      */
-    public async findRoleAll(){
-        const result  = await RoleModel.find();
+    public async findRoleAll() {
+        const result = await RoleModel.find();
         return Promise.resolve(result);
     }
 
@@ -66,35 +73,36 @@ class Role{
     /**
      * 查看所有角色列表
      */
-    public async findRoleList(pageNum:number=0,pageSize:number=10){
-       
-        let result =await  RoleModel.find()
-        .limit(pageSize).skip(pageSize*pageNum)
-        .populate({path:'addUser',select:'nickname'})
-        ;
+    public async findRoleList(pageNum: string = '0', pageSize: string = '10') {
 
-        let  resultPromise:Promise<any>[] =await result.map(async (item) => {
+        let result = await RoleModel.find()
+            .limit(Number(pageSize)).skip(Number(pageSize) * Number(pageNum))
+            .populate({ path: 'addUser', select: 'nickname' })
+            .populate({path:'park',select:'parkName'});
+            ;
+
+        let resultPromise: Promise<any>[] = await result.map(async (item) => {
             let resItem = item.toObject();
-            let count  = await this.countRoleUser(resItem._id);
-            resItem.count =count;
+            let count = await this.countRoleUser(resItem._id);
+            resItem.count = count;
             return resItem;
         });
 
-        
-        return Promise.all(resultPromise).then(result=>{
+
+        return Promise.all(resultPromise).then(result => {
             return Promise.resolve(result);
-        }).catch(err=>{
+        }).catch(err => {
             return Promise.reject(err);
         })
-        
+
     }
 
     /**
      * 查询角色的user数
      */
 
-    public async countRoleUser(role:string){
-        let count  = await UserModel.count({role});
+    public async countRoleUser(role: string) {
+        let count = await UserModel.count({ role });
         return count;
     }
 
@@ -102,14 +110,14 @@ class Role{
      * 删除用户
      * 
      */
-    public async  deleteRole(id:string){
-        let count  = await this.countRoleUser(id);
+    public async  deleteRole(id: string) {
+        let count = await this.countRoleUser(id);
 
-        if(count>0){
+        if (count > 0) {
             return Promise.reject(new Error('该角色存在用户不可删除'));
         }
 
-        const result  =  await RoleModel.findByIdAndDelete(id);
+        const result = await RoleModel.findByIdAndDelete(id);
 
         return Promise.resolve(result);
     }

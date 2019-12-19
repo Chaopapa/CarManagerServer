@@ -79,4 +79,43 @@ router.get("/parkInfo", function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); });
+router.get("/allPark", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, park_1["default"].selectAllPark()];
+            case 1:
+                result = _a.sent();
+                res.json(new res_1.ResSuccess("请求成功", result));
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.json(new res_1.ResError(error_3));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+router.get("/parkList", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, pageNum, pageSize, result, error_4;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = req.query, pageNum = _a.pageNum, pageSize = _a.pageSize;
+                return [4 /*yield*/, park_1["default"].findParkList(pageNum, pageSize)];
+            case 1:
+                result = _b.sent();
+                res.json(new res_1.ResSuccess("请求成功", result));
+                return [3 /*break*/, 3];
+            case 2:
+                error_4 = _b.sent();
+                res.json(new res_1.ResError(error_4));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 exports["default"] = router;

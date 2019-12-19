@@ -1,4 +1,5 @@
-import { Schema, SchemaTypes, model } from "mongoose";
+import { Schema, SchemaTypes, model, Document } from "mongoose";
+import BillModel, { BillMode }  from "../bill";
 
 const schema: Schema = new Schema({
     parkName: {
@@ -73,6 +74,27 @@ class Park {
             let result  =await park.save();
             return Promise.resolve(result);
         }
+    }
+
+    public async selectAllPark(){
+        return await ParkModel.find();
+    }
+
+    public async  findParkList(pageNum:string='0',pageSize:string='10'){
+        console.log(pageNum,pageSize);
+        let park  = await ParkModel.find().limit(Number(pageSize)).skip(Number(pageNum)*Number(pageSize));
+        
+        park.forEach(async (item:Document)=>{
+            let ruleArr =(item as any).ruleArr;
+            let ruleList  = await BillMode.find().in("_id",ruleArr);
+             item.toObject().ruleList =ruleList;
+
+        });
+        
+        return Promise.resolve(park);
+        
+        
+    
     }
 }
 

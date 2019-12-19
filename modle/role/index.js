@@ -51,7 +51,8 @@ var schema = new mongoose_1.Schema({
         type: String
     },
     park: {
-        type: mongoose_1.SchemaTypes.ObjectId
+        type: mongoose_1.SchemaTypes.ObjectId,
+        ref: "park"
     },
     resourceId: {
         type: Array
@@ -65,13 +66,13 @@ var Role = /** @class */ (function () {
     function Role() {
     }
     /**
-     * 新增角色
+     * 新增/修改角色
      * @param param0
      */
     Role.prototype.save = function (_a) {
-        var name = _a.name, desc = _a.desc, park = _a.park, resourceId = _a.resourceId;
+        var id = _a.id, name = _a.name, desc = _a.desc, park = _a.park, resourceId = _a.resourceId;
         return __awaiter(this, void 0, void 0, function () {
-            var resourceIdArr, role, result;
+            var resourceIdArr, result, role, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -79,12 +80,15 @@ var Role = /** @class */ (function () {
                         if (resourceId) {
                             resourceIdArr = resourceId.split(',');
                         }
-                        console.log(resourceIdArr);
-                        return [4 /*yield*/, new RoleModel({ name: name, desc: desc, park: park, resourceId: resourceIdArr })];
+                        if (!id) return [3 /*break*/, 2];
+                        return [4 /*yield*/, RoleModel.findByIdAndUpdate({ _id: id }, { name: name, desc: desc, park: park, resourceId: resourceIdArr })];
                     case 1:
-                        role = _b.sent();
-                        return [4 /*yield*/, role.save()];
+                        result = _b.sent();
+                        return [2 /*return*/, Promise.resolve(result)];
                     case 2:
+                        role = new RoleModel({ name: name, desc: desc, park: park, resourceId: resourceIdArr });
+                        return [4 /*yield*/, role.save()];
+                    case 3:
                         result = _b.sent();
                         return [2 /*return*/, Promise.resolve(result)];
                 }
@@ -92,7 +96,7 @@ var Role = /** @class */ (function () {
         });
     };
     /**
-     * 查询所有角色
+     * 查询所有角色}
      */
     Role.prototype.findRoleAll = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -120,9 +124,11 @@ var Role = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, RoleModel.find()
                             .limit(pageSize).skip(pageSize * pageNum)
-                            .populate({ path: 'addUser', select: 'nickname' })];
+                            .populate({ path: 'addUser', select: 'nickname' })
+                            .populate({ path: 'park', select: 'parkName' })];
                     case 1:
                         result = _a.sent();
+                        ;
                         return [4 /*yield*/, result.map(function (item) { return __awaiter(_this, void 0, void 0, function () {
                                 var resItem, count;
                                 return __generator(this, function (_a) {

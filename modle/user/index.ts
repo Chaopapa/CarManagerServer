@@ -91,10 +91,10 @@ class User{
     /**
      * 查询管理员对应的列表
      */
-    public async findUserList(pageNum:number=0,pageSize:number=10){
+    public async findUserList(pageNum:string='0',pageSize:string='10'){
         const result = await UserModel.find().populate({path:'role',select:'name'})
         .populate({path:'addUser',select:'nickname'})
-        .limit(Number(pageSize)).skip(Number(pageNum*pageSize));
+        .limit(Number(pageSize)).skip(Number(pageNum)*Number(pageSize));
         return Promise.resolve(result);
     }
 

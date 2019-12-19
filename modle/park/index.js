@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var mongoose_1 = require("mongoose");
+var bill_1 = require("../bill");
 var schema = new mongoose_1.Schema({
     parkName: {
         type: String,
@@ -99,6 +100,48 @@ var Park = /** @class */ (function () {
                     case 3:
                         result = _a.sent();
                         return [2 /*return*/, Promise.resolve(result)];
+                }
+            });
+        });
+    };
+    Park.prototype.selectAllPark = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, exports.ParkModel.find()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Park.prototype.findParkList = function (pageNum, pageSize) {
+        if (pageNum === void 0) { pageNum = '0'; }
+        if (pageSize === void 0) { pageSize = '10'; }
+        return __awaiter(this, void 0, void 0, function () {
+            var park;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log(pageNum, pageSize);
+                        return [4 /*yield*/, exports.ParkModel.find().limit(Number(pageSize)).skip(Number(pageNum) * Number(pageSize))];
+                    case 1:
+                        park = _a.sent();
+                        park.forEach(function (item) { return __awaiter(_this, void 0, void 0, function () {
+                            var ruleArr, ruleList;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        ruleArr = item.ruleArr;
+                                        return [4 /*yield*/, bill_1.BillMode.find()["in"]("_id", ruleArr)];
+                                    case 1:
+                                        ruleList = _a.sent();
+                                        item.toObject().ruleList = ruleList;
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); });
+                        return [2 /*return*/, Promise.resolve(park)];
                 }
             });
         });
