@@ -1,6 +1,8 @@
 import * as express from "express";
 import bill from "../../modle/bill";
 import park from "../../modle/park";
+import slot  from "../../modle/slot";
+
 import { ResSuccess, ResError, ResEmpty } from '../../base/entity/res'
 
 
@@ -14,6 +16,15 @@ router.get("/billingInfo", async (req, res) => {
         res.json(new ResError(error));
     }
 });
+
+router.get("/billingList",async (req,res)=>{
+    try {
+        let result = await park.selectAllPark();
+        res.json(new ResSuccess("请求成功", result));
+    } catch (error) {
+        res.json(new ResError(error));
+    }
+})
 
 router.get("/parkInfo", async (req, res) => {
     try {
@@ -34,6 +45,7 @@ router.get("/allPark", async (req, res) => {
 });
 
 
+
 router.get("/parkList", async (req, res) => {
     try {
         let { pageNum, pageSize } = req.query;
@@ -43,6 +55,26 @@ router.get("/parkList", async (req, res) => {
     } catch (error) {
         res.json(new ResError(error));
     }
-})
+});
+
+router.get("/slotInfo",async (req,res)=>{
+    try {
+        let result  = await slot.save(req.query);
+        res.json(new ResSuccess("请求成功",result));
+    } catch (error) {
+        res.json(new ResError(error));
+    }
+});
+
+router.get("/slotList",async (req,res)=>{
+    try {
+        let {pageNum,pageSize} = req.query;
+        let result  = await slot.findList(pageNum,pageSize)
+        res.json(new ResSuccess("请求成功",result));
+    } catch (error) {
+        res.json(new ResError(error));
+    }
+});
+
 
 export default router;

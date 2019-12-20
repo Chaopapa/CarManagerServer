@@ -37,7 +37,8 @@ const shcema: Schema = new Schema({
         type: Array
     },
     addUser: {//创建人
-        type: SchemaTypes.ObjectId
+        type: SchemaTypes.ObjectId,
+        ref:'user'
     }
 });
 
@@ -86,6 +87,13 @@ class Bill {
 
     public async selectAllBill(){
         let result  = await BillMode.find();
+        return Promise.resolve(result);
+    }
+
+    public async findList(pageNum:string,pageSize:string){
+        let result  = await BillMode.find().populate({path:"addUser",slect:"nickname"})
+        .limit(Number(pageSize)).skip(Number(pageNum)*Number(pageSize));
+
         return Promise.resolve(result);
     }
 
