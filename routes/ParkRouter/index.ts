@@ -19,7 +19,9 @@ router.get("/billingInfo", async (req, res) => {
 
 router.get("/billingList",async (req,res)=>{
     try {
-        let result = await park.selectAllPark();
+        let { pageNum, pageSize } = req.query;
+        let result = await bill.findList(pageNum,pageSize);
+
         res.json(new ResSuccess("请求成功", result));
     } catch (error) {
         res.json(new ResError(error));

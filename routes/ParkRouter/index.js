@@ -39,6 +39,7 @@ exports.__esModule = true;
 var express = require("express");
 var bill_1 = require("../../modle/bill");
 var park_1 = require("../../modle/park");
+var slot_1 = require("../../modle/slot");
 var res_1 = require("../../base/entity/res");
 var router = express.Router();
 router.get("/billingInfo", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -60,8 +61,28 @@ router.get("/billingInfo", function (req, res) { return __awaiter(void 0, void 0
         }
     });
 }); });
+router.get("/billingList", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, pageNum, pageSize, result, error_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = req.query, pageNum = _a.pageNum, pageSize = _a.pageSize;
+                return [4 /*yield*/, bill_1["default"].findList(pageNum, pageSize)];
+            case 1:
+                result = _b.sent();
+                res.json(new res_1.ResSuccess("请求成功", result));
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _b.sent();
+                res.json(new res_1.ResError(error_2));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
 router.get("/parkInfo", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var error_2;
+    var error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -72,15 +93,15 @@ router.get("/parkInfo", function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(new res_1.ResSuccess("操作成功"));
                 return [3 /*break*/, 3];
             case 2:
-                error_2 = _a.sent();
-                res.json(new res_1.ResError(error_2));
+                error_3 = _a.sent();
+                res.json(new res_1.ResError(error_3));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
 router.get("/allPark", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var result, error_3;
+    var result, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -91,15 +112,15 @@ router.get("/allPark", function (req, res) { return __awaiter(void 0, void 0, vo
                 res.json(new res_1.ResSuccess("请求成功", result));
                 return [3 /*break*/, 3];
             case 2:
-                error_3 = _a.sent();
-                res.json(new res_1.ResError(error_3));
+                error_4 = _a.sent();
+                res.json(new res_1.ResError(error_4));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); });
 router.get("/parkList", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, pageNum, pageSize, result, error_4;
+    var _a, pageNum, pageSize, result, error_5;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -111,8 +132,47 @@ router.get("/parkList", function (req, res) { return __awaiter(void 0, void 0, v
                 res.json(new res_1.ResSuccess("请求成功", result));
                 return [3 /*break*/, 3];
             case 2:
-                error_4 = _b.sent();
-                res.json(new res_1.ResError(error_4));
+                error_5 = _b.sent();
+                res.json(new res_1.ResError(error_5));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+router.get("/slotInfo", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result, error_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, slot_1["default"].save(req.query)];
+            case 1:
+                result = _a.sent();
+                res.json(new res_1.ResSuccess("请求成功", result));
+                return [3 /*break*/, 3];
+            case 2:
+                error_6 = _a.sent();
+                res.json(new res_1.ResError(error_6));
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+router.get("/slotList", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, pageNum, pageSize, result, error_7;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = req.query, pageNum = _a.pageNum, pageSize = _a.pageSize;
+                return [4 /*yield*/, slot_1["default"].findList(pageNum, pageSize)];
+            case 1:
+                result = _b.sent();
+                res.json(new res_1.ResSuccess("请求成功", result));
+                return [3 /*break*/, 3];
+            case 2:
+                error_7 = _b.sent();
+                res.json(new res_1.ResError(error_7));
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

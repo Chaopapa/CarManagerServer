@@ -37,68 +37,63 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var mongoose_1 = require("mongoose");
-var shcema = new mongoose_1.Schema({
-    ruleNum: {
-        type: String,
-        required: true
+// id(可选参数，传入位修改，不传入位新增)
+// num(车位编号)
+// parkId:停车场id
+// name:车库名称
+// status:0,1(0开启，1关闭)
+// type:0,1(车库类型 0：平面车库 1:立体车库)
+// count:(车位数)
+// barnArr:(车库)：json对象数组(包含floor,count，楼层和)
+var schema = new mongoose_1.Schema({
+    num: {
+        type: String
     },
-    ruleName: {
-        type: String,
-        required: true
-    },
-    userKind: {
-        type: String,
-        required: true
-    },
-    billingMode: {
-        type: String,
-        required: true
-    },
-    freeTime: {
-        type: String,
-        required: true
-    },
-    costLimit: {
-        type: String,
-        required: true
-    },
-    rule: {
-        type: String,
-        required: true
-    },
-    defaultRule: {
-        type: Array
-    },
-    addUser: {
+    parkId: {
         type: mongoose_1.SchemaTypes.ObjectId,
-        ref: 'user'
+        ref: 'park'
+    },
+    name: {
+        type: String
+    },
+    status: {
+        type: String,
+        "default": '0'
+    },
+    type: {
+        type: String,
+        "default": '0'
+    },
+    count: {
+        type: String
+    },
+    barnArr: {
+        type: Array
     }
 });
-exports.BillMode = mongoose_1.model("bill", shcema);
-var Bill = /** @class */ (function () {
-    function Bill() {
+exports.SlotModel = mongoose_1.model('slot', schema);
+var Slot = /** @class */ (function () {
+    function Slot() {
     }
-    Bill.prototype.saveOrUpdate = function (_a) {
-        var ruleId = _a.ruleId, ruleNum = _a.ruleNum, ruleName = _a.ruleName, userKind = _a.userKind, billingMode = _a.billingMode, freeTime = _a.freeTime, costLimit = _a.costLimit, rule = _a.rule, defaultRule = _a.defaultRule, addUser = _a.addUser;
+    Slot.prototype.save = function (_a) {
+        var id = _a.id, num = _a.num, parkId = _a.parkId, name = _a.name, status = _a.status, type = _a.type, count = _a.count, barnArr = _a.barnArr;
         return __awaiter(this, void 0, void 0, function () {
-            var defaultRuleArr, result, bill, result;
+            var barns, result, slot, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        defaultRuleArr = [];
-                        if (defaultRule) {
-                            defaultRuleArr = JSON.parse(defaultRule);
+                        barns = [];
+                        if (barnArr) {
+                            barns = JSON.parse(barnArr);
                         }
-                        if (!ruleId) return [3 /*break*/, 2];
-                        return [4 /*yield*/, exports.BillMode.findByIdAndUpdate({ _id: ruleId }, { ruleNum: ruleNum, ruleName: ruleName, userKind: userKind, billingMode: billingMode, freeTime: freeTime,
-                                costLimit: costLimit, rule: rule, defaultRule: defaultRuleArr, addUser: addUser })];
+                        if (!id) return [3 /*break*/, 2];
+                        return [4 /*yield*/, exports.SlotModel.findByIdAndUpdate({ _id: id }, { num: num, parkId: parkId, name: name, status: status, type: type, count: count, barnArr: barns })];
                     case 1:
                         result = _b.sent();
                         return [2 /*return*/, Promise.resolve(result)];
                     case 2:
-                        bill = new exports.BillMode({ ruleNum: ruleNum, ruleName: ruleName, userKind: userKind, billingMode: billingMode, freeTime: freeTime,
-                            costLimit: costLimit, rule: rule, defaultRule: defaultRuleArr, addUser: addUser });
-                        return [4 /*yield*/, bill.save()];
+                        slot = new exports.SlotModel({ num: num, parkId: parkId, name: name, status: status, type: type, count: count, barnArr: barns });
+                        return [4 /*yield*/, slot.save()];
                     case 3:
                         result = _b.sent();
                         return [2 /*return*/, Promise.resolve(result)];
@@ -106,25 +101,14 @@ var Bill = /** @class */ (function () {
             });
         });
     };
-    Bill.prototype.selectAllBill = function () {
+    Slot.prototype.findList = function (pageNum, pageSize) {
+        if (pageNum === void 0) { pageNum = '0'; }
+        if (pageSize === void 0) { pageSize = '10'; }
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, exports.BillMode.find()];
-                    case 1:
-                        result = _a.sent();
-                        return [2 /*return*/, Promise.resolve(result)];
-                }
-            });
-        });
-    };
-    Bill.prototype.findList = function (pageNum, pageSize) {
-        return __awaiter(this, void 0, void 0, function () {
-            var result;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, exports.BillMode.find().populate({ path: "addUser", slect: "nickname" })
+                    case 0: return [4 /*yield*/, exports.SlotModel.find().populate({ path: "parkId", slect: "parkName" })
                             .limit(Number(pageSize)).skip(Number(pageNum) * Number(pageSize))];
                     case 1:
                         result = _a.sent();
@@ -133,19 +117,6 @@ var Bill = /** @class */ (function () {
             });
         });
     };
-    Bill.prototype.findById = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _b = (_a = Promise).resolve;
-                        return [4 /*yield*/, exports.BillMode.findById({ _id: id })];
-                    case 1: return [2 /*return*/, _b.apply(_a, [_c.sent()])];
-                }
-            });
-        });
-    };
-    return Bill;
+    return Slot;
 }());
-exports["default"] = new Bill();
+exports["default"] = new Slot();

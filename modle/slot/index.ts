@@ -37,7 +37,7 @@ const schema = new Schema({
 })
 
 
-export const SlotModel:Model<Document,{}> = model('user',schema);
+export const SlotModel:Model<Document,{}> = model('slot',schema);
 
 interface SlotType{
     id?:string,
